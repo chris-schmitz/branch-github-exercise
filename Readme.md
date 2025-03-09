@@ -50,6 +50,12 @@ One of the things I realized while writing this code is that while I use feign c
 
 Conceptually it seems like I'd need to do something to fake out the external API I was calling out to, and looking around online I see tools for doing that, but I didn't want to use this exercise as the first time I sat down to learn the tools. So for now I skipped tests for the feign client and just verified that the feign client calls themselves were being called. That said I did stand up the API and confirm that the live calls do indeed work. So yeah, not full full code coverage, but given a real project and timeline yes I would take the time to learn how to implement those tools.  
 
+### Feign client exceptions and generic exceptions
+
+I added custom exceptions for the feign client errors so that the front end could distinguish errors that happen because our API had an issue vs errors that feign had making API calls, the most critical and obvious one being that the username being requested doesn't actually exist. 
+
+In addition to that I added a general catch all exception handler in for all other server errors. I did this after sending over my link because I was thinking back through the PDF I remembered the part about "can it handle bad input" and remembered that if I made a bad call the error returned wasn't json, it was a general html response which would cause issue on the front end libraries. The generic catch all just accepts whatever exception was thrown and converts it to json so at the very least the front end can get an idea of what may have happened from the status code and the error message response. 
+
 ### Caching
 
 #### Why the separate caching test suite
@@ -112,6 +118,7 @@ Ultimately, my opinion on that (and most things) is definitely open to influence
 When I was reviewing the code and exercise pdf one last time before sending it in I noticed that I missed a detail. I was concerned with the property names being returned matching the names requested in the PDF, but I missed some of the data discrepancies between what was being requested from the github api and what the pdf asked for. Little things like the `url` property requested is actually not githubs user `url` it's the `html_url`. 
 
 I also noticed that the timestamp returned by the github api was different than the format requested by the PDF. I added a custom deserializer so that the timestamp format was converted correctly, but I didn't add test coverage for it. Really, I didn't add test coverage for the deserialization conversion from the github response to our API's domain classes which in hindsight is a miss. I would go back and add that coverage in, but I decided to skip it and note it here since this is really trying to show how I code. Definitely something I'd want to cover in a real project. 
+
 
 # Tasks for assignment
 
