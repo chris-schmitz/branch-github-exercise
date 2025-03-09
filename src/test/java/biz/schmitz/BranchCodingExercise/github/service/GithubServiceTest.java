@@ -31,7 +31,15 @@ class GithubServiceTest {
     @Test
     public void getUserSummary_givenValidUsernameForAUserWithRepos_expectSummary() {
         var username = "octocat";
-        var user = new GithubUser(username, "", "", "Octocat", "", "", "");
+        var user = new GithubUser(
+                username,
+                "Octocat",
+                "https://avatars3.githubusercontent.com/u/583231?v=4",
+                "San Francisco",
+                "https://github.com/octocat ",
+                null,
+                "2011-01-25 18:44:36"
+        );
         var userRepos = List.of(
                 new GithubRepoMetadata("repo1", "http://github.com/octocat/repo1"),
                 new GithubRepoMetadata("repo2", "http://github.com/octocat/repo2")
