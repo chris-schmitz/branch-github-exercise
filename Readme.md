@@ -4,6 +4,17 @@
 
 Here's my submission for the Branch Coding Exercises. I spent probably 3 or 4 hours on it. There are aspects of the codebase that I would or may change given more time or if it was a real project, but I think this should give an idea of my normal approach. 
 
+I built this API in the typical springboot MVC style with a couple of additional libraries to support things like caching, a feign client for abstracting the API calls, json serialization/deserialization. The exercise didn't call for a repository layer but if it did I would also want to outfit the codebase with [test containers](https://testcontainers.com/) so I could do repository tests firing against real datastores. 
+
+For the testing I like to test:
+
+- The web layer, just the API calls and contracts
+- The service layer
+- The repository layer (when we have a data store)
+- The integration layer, basically everything from the controller down 
+
+I tend to work in that order as well, and I talk about that more in detail below. 
+
 ## Up and running
 
 > [!IMPORTANT]
@@ -95,6 +106,12 @@ Where I currently land is:
   - It feels like most of the time if your private methods need a method document it's a sign that they're either too big or not clearly written
 
 Ultimately, my opinion on that (and most things) is definitely open to influence and I'm cool going with whatever the team decides on. 
+
+### A note about the timestamp conversion during deserialization
+
+When I was reviewing the code and exercise pdf one last time before sending it in I noticed that I missed a detail. I was concerned with the property names being returned matching the names requested in the PDF, but I missed some of the data discrepancies between what was being requested from the github api and what the pdf asked for. Little things like the `url` property requested is actually not githubs user `url` it's the `html_url`. 
+
+I also noticed that the timestamp returned by the github api was different than the format requested by the PDF. I added a custom deserializer so that the timestamp format was converted correctly, but I didn't add test coverage for it. Really, I didn't add test coverage for the deserialization conversion from the github response to our API's domain classes which in hindsight is a miss. I would go back and add that coverage in, but I decided to skip it and note it here since this is really trying to show how I code. Definitely something I'd want to cover in a real project. 
 
 # Tasks for assignment
 
