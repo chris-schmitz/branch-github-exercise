@@ -6,18 +6,20 @@ import biz.schmitz.BranchCodingExercise.github.api.GithubUser;
 import biz.schmitz.BranchCodingExercise.github.domain.GithubUserSummary;
 import biz.schmitz.BranchCodingExercise.github.exceptions.GithubUserNotFoundException;
 import feign.FeignException;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class GithubService {
-    private GithubFeignClient githubFeignClient;
+    private final GithubFeignClient githubFeignClient;
 
     GithubService(GithubFeignClient githubFeignClient) {
         this.githubFeignClient = githubFeignClient;
     }
 
+    @Cacheable("GithubUserSummary")
     public GithubUserSummary getUserSummary(String username) {
         GithubUser user;
         List<GithubRepoMetadata> repos;

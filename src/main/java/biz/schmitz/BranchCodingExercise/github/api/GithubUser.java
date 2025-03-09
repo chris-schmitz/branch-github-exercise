@@ -12,6 +12,7 @@ public record GithubUser(
         String geoLocation,
         String url,
         String email,
+        @JsonProperty("created_at")
         String createdAt
 ) {
 }

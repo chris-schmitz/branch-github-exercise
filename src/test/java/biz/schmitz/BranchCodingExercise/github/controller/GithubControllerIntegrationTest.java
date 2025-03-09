@@ -21,7 +21,7 @@ class GithubControllerIntegrationTest {
     GithubFeignClient githubFeignClient;
 
     @Autowired
-    GithubController controller;
+    GithubController gihubController;
 
     @Test
     public void getUserSummary_canGetSummary() {
@@ -46,7 +46,7 @@ class GithubControllerIntegrationTest {
                 userRepos
         );
 
-        var actual = controller.getUserSummary(username);
+        var actual = gihubController.getUserSummary(username);
 
         assertEquals(expected, actual);
     }

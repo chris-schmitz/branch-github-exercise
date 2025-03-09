@@ -32,6 +32,9 @@ dependencies {
     implementation("io.github.openfeign:feign-jackson:13.5")
 
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    implementation("org.springframework.boot:spring-boot-starter-cache")
+    implementation("com.github.ben-manes.caffeine:caffeine")
 }
 
 tasks.withType<Test> {
@@ -39,5 +42,6 @@ tasks.withType<Test> {
 }
 
 tasks.test {
+    // * needed to suppress the inline mockito error when running tests
     jvmArgs("-XX:+EnableDynamicAgentLoading")
 }

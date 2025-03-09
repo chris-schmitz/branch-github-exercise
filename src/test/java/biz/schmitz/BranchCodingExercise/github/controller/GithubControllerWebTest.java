@@ -3,9 +3,11 @@ package biz.schmitz.BranchCodingExercise.github.controller;
 import biz.schmitz.BranchCodingExercise.github.domain.GithubUserSummary;
 import biz.schmitz.BranchCodingExercise.github.service.GithubService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import feign.FeignException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -16,6 +18,7 @@ import java.util.Collections;
 import static org.mockito.Mockito.when;
 
 @WebMvcTest(controllers = GithubController.class)
+@EnableCaching
 class GithubControllerWebTest {
     @MockitoBean
     GithubService githubService;
@@ -52,12 +55,12 @@ class GithubControllerWebTest {
 
     @Test
     public void getUserSummary_ifUserCannotBeFound_expectNotFound() throws Exception {
-        //TODO: come back and adjust this when we have the Feign Client so we can throw a FeinException
         var username = "someUnknownUsername";
         when(githubService.getUserSummary(username))
-                .thenThrow(new Exception("User Not found "));
+                .thenThrow(FeignException.NotFound.class);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/rest/github" + username))
-                .andExpect(MockMvcResultMatchers.status().isNotFound());
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+        ;
     }
 }

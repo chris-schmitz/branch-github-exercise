@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,7 +33,7 @@ class GithubServiceTest {
     }
 
     @Test
-    public void getUserSummary_givenValidUsernameForAUserWithRepos_expectSummary() throws Exception {
+    public void getUserSummary_givenValidUsernameForAUserWithRepos_expectSummary() {
         var username = "octocat";
         var user = new GithubUser(username, "", "", "Octocat", "", "", "");
         var userRepos = List.of(
@@ -70,7 +71,7 @@ class GithubServiceTest {
         when(githubFeignClient.getUserData(username))
                 .thenReturn(user);
         when(githubFeignClient.getUserRepoMetadata(username))
-                .thenReturn(List.of());
+                .thenReturn(Collections.emptyList());
         var expected = new GithubUserSummary(
                 user.userName(),
                 user.displayName(),
@@ -79,7 +80,7 @@ class GithubServiceTest {
                 user.email(),
                 user.url(),
                 user.createdAt(),
-                List.of()
+                Collections.emptyList()
         );
 
         var actual = githubService.getUserSummary(username);
@@ -87,15 +88,12 @@ class GithubServiceTest {
         assertEquals(expected, actual);
     }
 
-
     @Test
     public void getUserSummary_givenAnInvalidUsername_expectException() {
         var username = "invalidUser";
         when(githubFeignClient.getUserData(username))
                 .thenThrow(FeignException.NotFound.class);
 
-        assertThrows(GithubUserNotFoundException.class, () -> {
-            githubService.getUserSummary(username);
-        });
+        assertThrows(GithubUserNotFoundException.class, () -> githubService.getUserSummary(username));
     }
 }

@@ -18,7 +18,7 @@ public class GithubController {
     }
 
     @GetMapping("/{username}")
-    public GithubUserSummary getUserSummary(@PathVariable("username") String username) throws Exception {
+    public GithubUserSummary getUserSummary(@PathVariable("username") String username) {
         return githubService.getUserSummary(username);
     }
 }
