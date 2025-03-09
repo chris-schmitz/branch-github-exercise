@@ -6,9 +6,9 @@ import biz.schmitz.BranchCodingExercise.github.api.GithubUser;
 import biz.schmitz.BranchCodingExercise.github.domain.GithubUserSummary;
 import biz.schmitz.BranchCodingExercise.github.exceptions.GithubUserNotFoundException;
 import feign.FeignException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -25,12 +25,8 @@ class GithubServiceTest {
     @Mock
     private GithubFeignClient githubFeignClient;
 
+    @InjectMocks
     private GithubService githubService;
-
-    @BeforeEach
-    public void setUp() {
-        githubService = new GithubService(githubFeignClient);
-    }
 
     @Test
     public void getUserSummary_givenValidUsernameForAUserWithRepos_expectSummary() {

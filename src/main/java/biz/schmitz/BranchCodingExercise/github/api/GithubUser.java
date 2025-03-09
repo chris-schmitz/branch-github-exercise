@@ -1,7 +1,10 @@
 package biz.schmitz.BranchCodingExercise.github.api;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public record GithubUser(
         String userName,
         @JsonProperty("name")
@@ -12,7 +15,6 @@ public record GithubUser(
         String geoLocation,
         String url,
         String email,
-        @JsonProperty("created_at")
         String createdAt
 ) {
 }

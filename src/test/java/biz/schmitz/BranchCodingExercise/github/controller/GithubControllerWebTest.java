@@ -28,7 +28,7 @@ class GithubControllerWebTest {
 
 
     @Test
-    public void getUserSummary_canRequestDetailsForUsername() throws Exception {
+    public void getUserSummary_givenValidUsername_canRequestDetailsForUsername() throws Exception {
         var objectMapper = new ObjectMapper();
         var username = "octocat";
         var expected = new GithubUserSummary(

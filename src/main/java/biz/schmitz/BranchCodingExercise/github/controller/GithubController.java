@@ -17,6 +17,16 @@ public class GithubController {
         this.githubService = githubService;
     }
 
+    /**
+     * Get a github user's summary.
+     * Given an valid github username, this endpoint will look up a subset of their user data
+     * and a list of their repository metadata and return a summary. If the user can't be found
+     * a 404 will be returned with a human-readable error message that could be displayed by the
+     * front end.
+     *
+     * @param username - A valid github username
+     * @return GithubUserSummary - A subset of github information for the user
+     */
     @GetMapping("/{username}")
     public GithubUserSummary getUserSummary(@PathVariable("username") String username) {
         return githubService.getUserSummary(username);
