@@ -19,7 +19,7 @@ public class GithubService {
         this.githubFeignClient = githubFeignClient;
     }
 
-    @Cacheable("GithubUserSummary")
+    @Cacheable(value = "GithubUserSummary", cacheManager = "cacheManager")
     public GithubUserSummary getUserSummary(String username) {
         GithubUser user;
         List<GithubRepoMetadata> repos;

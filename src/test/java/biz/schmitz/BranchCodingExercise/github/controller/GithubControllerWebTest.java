@@ -1,9 +1,9 @@
 package biz.schmitz.BranchCodingExercise.github.controller;
 
 import biz.schmitz.BranchCodingExercise.github.domain.GithubUserSummary;
+import biz.schmitz.BranchCodingExercise.github.exceptions.GithubUserNotFoundException;
 import biz.schmitz.BranchCodingExercise.github.service.GithubService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import feign.FeignException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -57,9 +57,9 @@ class GithubControllerWebTest {
     public void getUserSummary_ifUserCannotBeFound_expectNotFound() throws Exception {
         var username = "someUnknownUsername";
         when(githubService.getUserSummary(username))
-                .thenThrow(FeignException.NotFound.class);
+                .thenThrow(GithubUserNotFoundException.class);
 
-        mockMvc.perform(MockMvcRequestBuilders.get("/rest/github" + username))
+        mockMvc.perform(MockMvcRequestBuilders.get("/rest/github/" + username))
                 .andExpect(MockMvcResultMatchers.status().isNotFound())
         ;
     }

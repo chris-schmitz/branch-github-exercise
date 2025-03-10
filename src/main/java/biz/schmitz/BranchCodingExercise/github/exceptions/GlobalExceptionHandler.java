@@ -12,8 +12,9 @@ import java.util.Map;
 public class GlobalExceptionHandler {
     @ExceptionHandler(GithubUserNotFoundException.class)
     public ResponseEntity<Map<String, String>> handleUserNotFound(GithubUserNotFoundException exception) {
+        var message = exception.getMessage() != null ? exception.getMessage() : "Unable to get github user";
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                .body(Map.of("error", exception.getMessage()));
+                .body(Map.of("error", message));
     }
 
     @ExceptionHandler(FeignException.class)
